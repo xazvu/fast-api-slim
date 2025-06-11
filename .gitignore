@@ -1,0 +1,51 @@
+# ОС
+.DS_Store
+Thumbs.db
+
+# Логи
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Кэш
+.cache/
+*.tmp
+*.swp
+
+# node.js
+node_modules/
+dist/
+build/
+
+# Python
+__pycache__/
+*.py[cod]
+env/
+venv/
+
+# Java
+*.class
+target/
+*.jar
+
+# IDE / Editor
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Misc
+.env
+*.bak
+*.old
+*.orig
+*.gz
+*.zip
+
+# macOS
+*.DS_Store
+
+# Windows
+ehthumbs.db
+desktop.ini
