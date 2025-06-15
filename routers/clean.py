@@ -1,26 +1,25 @@
-from fastapi import APIRouter, Depends
-from pydantic import BaseModel
-
+from typing import Annotated
+from fastapi import APIRouter, Depends, Query, Path
+from pydantic import BaseModel, EmailStr
 router = APIRouter(
-    prefix="/clean",
-    tags=["clean"],
+    prefix="/main",
+    tags=["main"],
 )
-# pydantic модель для добавления новой задачи
-class Add(BaseModel):
-    name: str
-    description: str | None = None
 
-
-# для чтения задач из базы данных
-class Read_task(Add):
+class Post(BaseModel):
     id: int
-    model_config = {
-        "from_attributes": True
-    }
+    title: str
+    body: str
 
 
+poster = [
+    {'id': 1, 'title': 'News 1', 'body': 'Text 1'},
+    {'id': 2, 'title': 'News 2', 'body': 'Text 2'},
+    {'id': 3, 'title': 'News 3', 'body': 'Text 3'},
+    {'id': 4, 'title': 'News 4', 'body': 'Text 4'}
+]
 
+@router.get('/posts')
+async def posts() -> list[Post]:
+    return [Post(**post) for post in poster]
 
-@router.post("/")
-async def add_task(task: Add = Depends()):
-    return {'data': task}

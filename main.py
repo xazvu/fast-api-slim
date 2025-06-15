@@ -2,12 +2,19 @@ import uvicorn
 
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
-
 from starlette.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+import os
 
+from contextlib import asynccontextmanager
 from routers.clean import router as clean
 
+
+
 app = FastAPI()
+
+app.mount("/css", StaticFiles(directory=os.path.join('templates', "css")), name="css")
+
 app.include_router(clean)
 
 templates = Jinja2Templates(directory='templates')
