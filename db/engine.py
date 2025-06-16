@@ -1,17 +1,20 @@
 from datetime import datetime
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 from .models import Base
 
-engine = create_async_engine('sqlite+aiosqlite:///car.db')
-new_session = async_sessionmaker(engine, expire_on_commit=False)
+DATABASE_URL = "sqlite:///./car3.db"  # или другой URL
+
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Создать таблицы (один раз)
 def init_db():
     Base.metadata.create_all(bind=engine)
 
-
 def get_db():
-    db = new_session()
+    db = SessionLocal()
     try:
         yield db
     finally:
