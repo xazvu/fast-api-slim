@@ -4,9 +4,10 @@ from sqlalchemy import String
 class Base(DeclarativeBase):
     pass
 
-class User(Base):
-    __tablename__ = "users"
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String)
-    email: Mapped[str] = mapped_column(String)
-    password: Mapped[str] = mapped_column(String)
+class Car(Base):
+    __tablename__ = "tasks"
+    name: Mapped[str] = mapped_column(String(20), unique=True)
+    description: Mapped[str] = mapped_column(String(1000))
+    color: Mapped[str] = mapped_column(String(20))
+    power: Mapped[int]
+    price: Mapped[int] = mapped_column()

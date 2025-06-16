@@ -1,25 +1,26 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, Query, Path
-from pydantic import BaseModel, EmailStr
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from db import models
+from db.models import Car
+from db.engine import get_db
+from validate import uservalid
+
 router = APIRouter(
     prefix="/main",
     tags=["main"],
 )
 
-class Post(BaseModel):
-    id: int
-    title: str
-    body: str
+@router.get("/car", response_model=list[uservalid.ReadCar])
+def get_cat(db: Session = Depends(get_db)):
+    return db.query(Car).all()
 
 
-poster = [
-    {'id': 1, 'title': 'News 1', 'body': 'Text 1'},
-    {'id': 2, 'title': 'News 2', 'body': 'Text 2'},
-    {'id': 3, 'title': 'News 3', 'body': 'Text 3'},
-    {'id': 4, 'title': 'News 4', 'body': 'Text 4'}
-]
-
-@router.get('/posts')
-async def posts() -> list[Post]:
-    return [Post(**post) for post in poster]
-
+@router.post("/car", response_model=uservalid.CarCreate)
+def create_car(car: uservalid.CarCreate, db: Session = Depends(get_db)):
+    new_car = models.Car(name=car.name, description=car.description, color=car.color, power=car.power, price=car.price)
+    db.add(new_car)
+    db.commit()
+    db.refresh(new_car)
+    return new_car

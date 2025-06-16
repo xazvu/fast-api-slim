@@ -1,11 +1,16 @@
 from pydantic import BaseModel
 
-class UserCreate(BaseModel):
-    name: str
-    email: str
-    password: str
 
-class UserRead(UserCreate):
+class CarCreate(BaseModel):
+    id: int
+    name: str
+    description: str
+    color: str
+    power: int
+    price: int
+
+
+class ReadCar(CarCreate):
     id: int
     model_config = {
         "from_attributes": True
